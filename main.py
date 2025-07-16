@@ -8,6 +8,7 @@ from functions.get_files_info import schema_get_files_info
 from functions.run_python import schema_run_python_file
 from functions.get_file_content import schema_get_file_content
 from functions.write_file import schema_write_file
+from functions.call_function import call_function
 
 
 # Get connect to google
@@ -72,7 +73,12 @@ def main():
     
     if function_calls is not None and len(function_calls) > 0:
         for function_call_part in function_calls:
-            print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+            tool_response = call_function(function_call_part, is_verbose)
+            if tool_response is None or tool_response.parts is None or tool_response.parts[0].function_response is None:
+                raise Exception('function did not have a response')
+            if  tool_response.parts[0].function_response.response and is_verbose:
+                print(f"-> {tool_response.parts[0].function_response.response}")
+
     else:
         print(response.text)
 
