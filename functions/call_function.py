@@ -51,7 +51,7 @@ def call_function(function_call_part, verbose=False):
                     parts=[
                         types.Part.from_function_response(
                             name=function_name,
-                            response={"error": f"Unknown function: {function_name}"},
+                            response={"error": f"Failed to call function function: {function_name}"},
                         )
                     ],
                 )
