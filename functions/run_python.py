@@ -1,5 +1,32 @@
 import os
 import subprocess
+from google.genai import types
+
+
+# Define functions to make them LLM readable
+schema_run_python_file = types.FunctionDeclaration(
+    name="run_python_file",
+    description="run python file with optional additional arguments, constrained to the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="path to the file we want to run, relative to the working directory.",
+            ),
+            "args": types.Schema(
+                type=types.Type.ARRAY,
+                description="add command line arguments, if not provided program will run as 'python file_path'",
+                items=types.Schema(
+                    type=types.Type.STRING,
+                    description="each argument passed to the script"
+                )
+            ),
+        },
+    ),
+)
+
+
 
 def run_python_file(working_directory, file_path, args=[]):
       

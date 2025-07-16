@@ -1,4 +1,25 @@
 import os
+from google.genai import types
+
+# Define functions to make them LLM readable
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="overwrite text in file with string in content paramter, constrained to the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="path to the file we want to overwrite, relative to the working directory.",
+            ),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="the new content you want to populate the file with, this will replace all content currently in the file",
+            ),
+        },
+    ),
+)
+
 
 def write_file(working_directory, file_path, content):
     
